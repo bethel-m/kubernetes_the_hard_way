@@ -17,7 +17,9 @@ module "vpc" {
 
 module "elb" {
   source = "./elb"
-
+  depends_on = [
+    module.ec2
+  ]
   lb_name = "kubernetes-lb"
   internale_facing_lb = false 
   lb_type = "network"
@@ -36,6 +38,9 @@ module "elb" {
 }
 
 module "ec2" {
+  depends_on = [
+    module.vpc
+  ]
   source = "./ec2"
   master_instance_start_ip = ""
   key_name = "kubernetes_key.pem"
